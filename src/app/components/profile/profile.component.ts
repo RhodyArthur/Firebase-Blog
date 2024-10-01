@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { UserInterface } from '../../model/user-interface';
 
 @Component({
   selector: 'app-profile',
@@ -11,26 +12,28 @@ import { Router } from '@angular/router';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit{
-  user: User | null = null;
+  user: UserInterface | null = null;
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-   this.user = this.authService.getCurrentUser();
-   if(!this.user) {
-    const storedUser = this.authService.getUserData();
-
-    if(storedUser) {
+    const firebaseUser = this.authService.getCurrentUser();
+    if (firebaseUser) {
       this.user = {
-        email: storedUser.email,
-        displayName: storedUser.displayName,
-      } as User;
+        email: firebaseUser.email,
+        username: firebaseUser.displayName,
+      };
+    } else {
+      const storedUser = this.authService.getUserData();
+      if (storedUser) {
+        this.user = {
+          email: storedUser.email,
+          username: storedUser.username,
+        };
+      } else {
+        this.router.navigate(['login']);
+      }
     }
-    else {
-      this.router.navigate(['login'])
-    }
-   }
   }
-
   // logout user 
   logOut() {
     this.authService.logout();

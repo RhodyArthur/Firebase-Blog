@@ -1,24 +1,27 @@
 import { Injectable } from '@angular/core';
 import {Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, User, UserCredential} from '@angular/fire/auth';
-import {from, Observable} from 'rxjs';
+import { getDownloadURL, ref, uploadBytes, Storage } from '@angular/fire/storage';
+import {from, Observable, switchMap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private firebaseAuth: Auth) { }
+  constructor(private firebaseAuth: Auth, private storage: Storage) { }
 
   // create a user
-  register(email: string, username: string, password: string): Observable<void> {
+  register(email: string, username: string, password: string): Observable<User> {
       const promise = createUserWithEmailAndPassword(
         this.firebaseAuth,
         email,
         password
       )
-      .then((response) => updateProfile(response.user, {displayName: username}))
-      .then(() => {
-        this.setUserData(this.firebaseAuth.currentUser)
+      .then((response) => {
+        return updateProfile(response.user, {displayName: username}).then(() => response.user)})
+      .then((user) => {
+        this.setUserData(user)
+        return user;
       })
 
      return from(promise)
@@ -53,10 +56,6 @@ export class AuthService {
     return from(signOut(this.firebaseAuth));
   }
 
-  // get current user
-  // getCurrentUser(): User | null {
-  //   return this.firebaseAuth.currentUser;
-  // }
   getCurrentUser(): User | null {
     const user = this.firebaseAuth.currentUser;
 
@@ -82,5 +81,15 @@ export class AuthService {
   // clear user from local storage
   private clearUser() {
     localStorage.removeItem('userData');
+  }
+
+  // upload user profile
+  uploadProfilePicture(file: File, user: User): Observable<string> {
+    const filePath = `profilePictures/${user.uid}/${file.name}`;
+    const storageRef = ref(this.storage, filePath);
+
+    return from(uploadBytes(storageRef, file)).pipe(
+      switchMap(() => getDownloadURL(storageRef))
+    );
   }
 }
