@@ -15,9 +15,10 @@ import { getPerformance, providePerformance } from '@angular/fire/performance';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
 import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai-preview';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration(), provideFirebaseApp(() => initializeApp({"projectId":"angular-blog-327dd","appId":"1:704313001442:web:a0913555236c7a7e00e5bb","storageBucket":"angular-blog-327dd.appspot.com","apiKey":"AIzaSyDaQfuSzykxORCVgyq75ElX_0UEUFzYf7Y","authDomain":"angular-blog-327dd.firebaseapp.com","messagingSenderId":"704313001442","measurementId":"G-K8R7318T9M"})), provideAuth(() => getAuth()), provideAnalytics(() => getAnalytics()), ScreenTrackingService, UserTrackingService,
+  providers: [provideRouter(routes), provideClientHydration(), provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), provideAuth(() => getAuth()), provideAnalytics(() => getAnalytics()), ScreenTrackingService, UserTrackingService,
 //      provideAppCheck(() => {
 //   // TODO get a reCAPTCHA Enterprise here https://console.cloud.google.com/security/recaptcha?project=_
 //   const provider = new ReCaptchaEnterpriseProvider(/* reCAPTCHA Enterprise site key */);
