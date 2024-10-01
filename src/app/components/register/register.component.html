@@ -1,12 +1,59 @@
-<p>register works!</p>
 <div class="register-container">
   <h3>Sign Up</h3>
 
+  @if (errorMessage) {
+    <p>{{errorMessage}}</p>
+  }
+
+  @if (isLoading) {
+    <div id="spinner">
+      <div class="spinner"></div>
+    </div>
+  }
+
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-<!--    username-->
+    <!-- username-->
     <input type="text" placeholder="Enter username" formControlName="username"/>
+    @if (registerForm.get('username')?.invalid && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)) {
+      @if (registerForm.get('username')?.errors?.['required']) {
+        <small class="error">Can't be empty</small>
+      }
+    }
+  
+    
+
+    <!-- email -->
     <input type="email" name="email" id="email" placeholder="Enter email" formControlName="email"/>
+    @if (registerForm.get('email')?.invalid && (registerForm.get('email')?.touched || registerForm.get('email')?.dirty)) {
+      @if (registerForm.get('email')?.errors?.['required']) {
+          <small class="error">Can't be empty</small>
+      }
+      @if (registerForm.get('email')?.errors?.['email']) {
+          <small class="error">Invalid Email</small>
+      }
+  }
+
+    <!-- password -->
     <input type="password" name="password" id="password" placeholder="Enter password" formControlName="password"/>
+    @if(registerForm.get('password')?.invalid && (registerForm.get('password')?.touched || registerForm.get('password')?.dirty)){
+      @if (registerForm.get('password')?.errors?.['required']) {
+          <small class="error">Can't be empty</small>
+      }
+      @if (registerForm.get('password')?.errors?.['minlength']) {
+          <small class="error">Password must be at least 8 characters</small>
+      }
+    }
+
+    <!-- repeat password -->
+    <input type="password" name="repeatPassword"  placeholder="Repeat Password" formControlName="repeatPassword">
+    @if(registerForm.get('repeatPassword')?.invalid && (registerForm.get('repeatPassword')?.touched || registerForm.get('repeatPassword')?.dirty)){
+        @if (registerForm.get('repeatPassword')?.errors?.['required']) {
+            <small class="error">Can't be empty</small>
+        }
+        @if (registerForm.errors?.['mismatch'] && (registerForm.get('repeatPassword')?.touched || registerForm.get('repeatPassword')?.dirty)) {
+            <small class="error"> Passwords must match. </small>
+        }
+    }
     <button type="submit">Sign Up</button>
   </form>
 </div>

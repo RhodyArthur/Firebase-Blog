@@ -1,35 +1,66 @@
 import { Component } from '@angular/core';
-import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
+import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
 
-  constructor(private fb: FormBuilder, private authService: AuthService,
-              private router: Router) {
-  }
+  errorMessage: string | null = null;
+  isLoading: boolean = false;
+  registerForm!: FormGroup;
 
-    registerForm = this.fb.nonNullable.group({
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private userService: UserService) {
+
+    this.registerForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
-    })
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      repeatPassword: ['', [Validators.required]]
+    },
+    {validators: this.passwordMatchValidator})
+  }
+
+   // check if password match
+   passwordMatchValidator(form: FormGroup) {
+    return form.get('password')?.value === form.get('repeatPassword')?.value
+        ? null : { 'mismatch': true };
+    }
 
   onSubmit() {
-    const rawForm = this.registerForm.getRawValue();
-    this.authService.register(rawForm.email, rawForm.username, rawForm.password)
-      .subscribe(() => {
-        this.router.navigate(['/'])
+    if(this.registerForm.valid) {
+
+      const { email, username,  password } = this.registerForm.getRawValue();
+
+      this.isLoading = true;
+
+      this.authService.register(email, username, password)
+        .subscribe({
+          next: () => {
+            // this.userService.setUserData(username, email);
+              this.router.navigate(['login']);
+              this.isLoading = false;
+              this.errorMessage = null;
+          },
+          error: err => {
+            this.isLoading = false;
+            this.errorMessage = err.code + ' Failed to register user';
+            console.error('Failed to register user', err);
+          }
       })
-    console.log('clicked')
+      // reset form
+      this.registerForm.reset();
+    }
   }
 }

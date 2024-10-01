@@ -1,0 +1,44 @@
+<div class="container">
+    <h3>Log In</h3>
+  
+    @if (errorMessage) {
+      <p>{{errorMessage}}</p>
+    }
+
+    @if (isLoading) {
+        <div id="spinner">
+            <div class="spinner"></div>
+        </div>
+    }
+  
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  
+      <!-- email -->
+      <input type="email" name="email" id="email" placeholder="Enter email" formControlName="email"/>
+      @if (loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)) {
+        @if (loginForm.get('email')?.errors?.['required']) {
+            <small class="error">Can't be empty</small>
+        }
+        @if (loginForm.get('email')?.errors?.['email']) {
+            <small class="error">Invalid Email</small>
+        }
+    }
+  
+      <!-- password -->
+      <input type="password" name="password" id="password" placeholder="Enter password" formControlName="password"/>
+      @if(loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)){
+        @if (loginForm.get('password')?.errors?.['required']) {
+            <small class="error">Can't be empty</small>
+        }
+        @if (loginForm.get('password')?.errors?.['minlength']) {
+            <small class="error">Password must be at least 8 characters</small>
+        }
+    }
+
+        <!-- button -->
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <button type="submit" (click)="onGoogleSignIn()">Sign In with Google</button>
+  </div>
+  
