@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { UserInterface } from '../../model/user-interface';
 
@@ -29,7 +28,7 @@ export class ProfileComponent implements OnInit{
         this.user = {
           email: storedUser.email,
           username: storedUser.username,
-          profileImg: storedUser.photoURL
+          profileImg: storedUser.profileImage
         };
       } else {
         this.router.navigate(['login']);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, User, UserCredential} from '@angular/fire/auth';
 import { getDownloadURL, ref, uploadBytes, Storage } from '@angular/fire/storage';
-import {from, Observable, switchMap} from 'rxjs';
+import {from, map, Observable, switchMap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -68,7 +68,7 @@ export class AuthService {
 
   // set data to local storage
   setUserData(user: User | null) {
-      const userData = { email : user?.email, username: user?.displayName};   
+      const userData = { email : user?.email, username: user?.displayName, profileImage: user?.photoURL};   
       localStorage.setItem('userData', JSON.stringify(userData))
   }
 
@@ -89,7 +89,13 @@ export class AuthService {
     const storageRef = ref(this.storage, filePath);
 
     return from(uploadBytes(storageRef, file)).pipe(
-      switchMap(() => getDownloadURL(storageRef))
+      switchMap(() => {
+        return (getDownloadURL(storageRef))
+      }),
+      map((url) => {
+        this.setUserData({...user, photoURL: url})
+        return url
+      })
     );
   }
 }

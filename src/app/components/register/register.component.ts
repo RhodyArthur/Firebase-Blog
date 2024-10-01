@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
-import { CommonModule } from '@angular/common';
-import { UserService } from '../../services/user.service';
 import { updateProfile, User } from '@angular/fire/auth';
 
 @Component({
@@ -23,7 +21,7 @@ export class RegisterComponent {
   registerForm!: FormGroup;
   selectedFile: File | null = null;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private userService: UserService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
 
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
