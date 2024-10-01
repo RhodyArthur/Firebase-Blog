@@ -36,7 +36,11 @@
     }
 
         <!-- button -->
-      <button type="submit">Sign Up</button>
+      <div class="btn">
+        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+        <p>Don't have an account?
+            <a [routerLink]="['/','register']" routerLinkActive="active-link" aria-label="Sign up">Sign Up</a></p>
+    </div>
     </form>
 
     <button type="submit" (click)="onGoogleSignIn()">Sign In with Google</button>

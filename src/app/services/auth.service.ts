@@ -15,8 +15,11 @@ export class AuthService {
         this.firebaseAuth,
         email,
         password
-      ).then((response) =>
-      updateProfile(response.user, {displayName: username}))
+      )
+      .then((response) => updateProfile(response.user, {displayName: username}))
+      .then(() => {
+        this.setUserData(this.firebaseAuth.currentUser)
+      })
 
      return from(promise)
   }
@@ -37,6 +40,7 @@ export class AuthService {
     const provider = new GoogleAuthProvider();
     const promise = signInWithPopup(this.firebaseAuth, provider)
     .then((result: UserCredential) => {
+      this.setUserData(result.user)
       return result.user;
     })
 
@@ -45,11 +49,38 @@ export class AuthService {
 
   // log out
   logout() {
+    this.clearUser();
     return from(signOut(this.firebaseAuth));
   }
 
   // get current user
+  // getCurrentUser(): User | null {
+  //   return this.firebaseAuth.currentUser;
+  // }
   getCurrentUser(): User | null {
-    return this.firebaseAuth.currentUser;
+    const user = this.firebaseAuth.currentUser;
+
+    if(user) {
+      this.setUserData(user)
+    }
+
+    return user;
+  }
+
+  // set data to local storage
+  setUserData(user: User | null) {
+      const userData = { email : user?.email, username: user?.displayName};   
+      localStorage.setItem('userData', JSON.stringify(userData))
+  }
+
+  // get user from local storage
+  getUserData() {
+    const storedUser = localStorage.getItem('userData');
+    return storedUser ? JSON.parse(storedUser) : null;
+  }
+
+  // clear user from local storage
+  private clearUser() {
+    localStorage.removeItem('userData');
   }
 }

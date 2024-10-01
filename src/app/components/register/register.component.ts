@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 
@@ -10,7 +10,7 @@ import { UserService } from '../../services/user.service';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CommonModule
+    RouterLink, RouterLinkActive
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -48,7 +48,6 @@ export class RegisterComponent {
       this.authService.register(email, username, password)
         .subscribe({
           next: () => {
-            // this.userService.setUserData(username, email);
               this.router.navigate(['login']);
               this.isLoading = false;
               this.errorMessage = null;

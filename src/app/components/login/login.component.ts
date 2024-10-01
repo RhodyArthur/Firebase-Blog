@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '@angular/fire/auth';
 import { UserService } from '../../services/user.service';
@@ -8,7 +8,7 @@ import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -57,15 +57,7 @@ export class LoginComponent {
 
     this.authService.googleSignIn()
     .subscribe({
-      next: (user: User) => {
-        // store data in local storage
-        // const username = user.displayName;
-        // const email = user.email;
-
-        // if (username && email) {
-        //   this.userService.setUserData(username, email);
-        // }
-
+      next: () => {
         this.router.navigate(['/']);
         this.isLoading = false;
         this.errorMessage = null;

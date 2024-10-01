@@ -1,0 +1,10 @@
+<p>profile works!</p>
+<div class="container">
+    @if (user) {
+        <p>{{ user.displayName }}</p>
+        <p>{{ user.email }}</p>
+    }
+
+    <!-- logout btn -->
+     <button type="submit" (click)="logOut()">Logout</button>
+</div>
