@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit{
       this.user = {
         email: firebaseUser.email,
         username: firebaseUser.displayName,
+        profileImg: firebaseUser.photoURL
       };
     } else {
       const storedUser = this.authService.getUserData();
@@ -28,6 +29,7 @@ export class ProfileComponent implements OnInit{
         this.user = {
           email: storedUser.email,
           username: storedUser.username,
+          profileImg: storedUser.photoURL
         };
       } else {
         this.router.navigate(['login']);
