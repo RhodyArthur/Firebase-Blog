@@ -1,2 +1,8 @@
 <p>home works!</p>
 <a [routerLink]="['/profile']">View Profile</a>
+<button (click)="displayForm()">New Post</button>
+<app-post-list/>
+
+@if (showForm) {
+  <app-create-edit-post/>
+}

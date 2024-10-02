@@ -1,0 +1,19 @@
+<p>create-edit-post works!</p>
+<div class="form-container">
+  <h3>Add a Post</h3>
+
+  <form [formGroup]="postForm" (ngSubmit)="onSend()">
+    <div class="form-item">
+      <input type="text" id="title" name="title" placeholder="Title of post" formControlName="title">
+    </div>
+
+    <div class="form-item">
+      <textarea name="content" id="content" cols="30" rows="10" formControlName="content"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" (click)="discard()">discard</button>
+      <button type="submit">Send</button>
+    </div>
+  </form>
+</div>
