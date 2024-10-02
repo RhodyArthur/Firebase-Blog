@@ -11,7 +11,7 @@
 
       <div class="details-actions">
         <button (click)="displayForm()">Edit <i class="fa-solid fa-pen"></i></button>
-        <button>Delete <i class="fa-solid fa-trash-can"></i></button>
+        <button (click)="displayModal()">Delete <i class="fa-solid fa-trash-can"></i></button>
       </div>
     </div>
 
@@ -46,4 +46,8 @@
 }
 @if (showForm) {
   <app-create-edit-post *ngIf="post$ | async as post" [post]="post"/>
+}
+
+@if (showDelete) {
+  <app-delete/>
 }

@@ -5,6 +5,7 @@ import {PostService} from "../../services/post.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AsyncPipe, NgIf} from "@angular/common";
 import {CreateEditPostComponent} from "../modal/create-edit-post/create-edit-post.component";
+import {DeleteComponent} from "../modal/delete/delete.component";
 
 @Component({
   selector: 'app-post-details',
@@ -12,7 +13,8 @@ import {CreateEditPostComponent} from "../modal/create-edit-post/create-edit-pos
   imports: [
     NgIf,
     AsyncPipe,
-    CreateEditPostComponent
+    CreateEditPostComponent,
+    DeleteComponent
   ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.scss'
@@ -22,6 +24,7 @@ export class PostDetailsComponent implements OnInit{
   postId!: string | null;
   isLoading: boolean = false;
   showForm: boolean = false;
+  showDelete: boolean = false;
 
   constructor(private postService: PostService, private route: ActivatedRoute, private router: Router) {}
 
@@ -36,5 +39,9 @@ export class PostDetailsComponent implements OnInit{
 
   displayForm() {
     this.showForm = !this.showForm
+  }
+
+  displayModal() {
+    this.showDelete = !this.showDelete
   }
 }

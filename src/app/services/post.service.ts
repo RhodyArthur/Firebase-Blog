@@ -8,7 +8,7 @@ import {
   doc,
   docData,
   addDoc,
-  updateDoc
+  updateDoc, deleteDoc
 } from '@angular/fire/firestore';
 import {catchError, from, map, Observable, retry, take, throwError} from 'rxjs';
 import { Post } from '../model/post';
@@ -39,7 +39,7 @@ export class PostService {
   // Read a single post
   getPost(id: string): Observable<Post | undefined> {
     const postRef = doc(this.firestore, 'post', id)
-    return docData(postRef, {idField: 'userId'}) as Observable<Post | undefined>;
+    return docData(postRef, {idField: 'id'}) as Observable<Post | undefined>;
   }
 
   // create a post
@@ -66,6 +66,17 @@ export class PostService {
       retry(3),
       catchError(err => {
         return throwError(() => err.message || 'Failed to update post')
+      })
+    )
+  }
+
+//   delete post
+  deletePost(postId: string): Observable<void>{
+    const postRef = doc(this.firestore, 'post', postId)
+    return  from(deleteDoc(postRef)).pipe(
+      retry(3),
+      catchError(err => {
+        return throwError(() => err.message || 'Failed to delete post')
       })
     )
   }

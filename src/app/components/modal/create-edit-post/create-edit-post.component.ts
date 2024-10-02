@@ -82,14 +82,20 @@ export class CreateEditPostComponent implements OnInit{
       // check if user is logged in
       if (!this.user) {
         this.errorMessage = 'You must be logged in to edit a post.';
-        this.router.navigate(['login'])
+        this.clearErrorMessage();
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000)
         return;
       }
 
       // is user authorized to edit
       if (this.post.userId !== this.user.uid) {
         this.errorMessage = 'You are not authorized to edit this post.';
-        console.log('masa is it your post')
+        this.clearErrorMessage();
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000)
         return;
       }
 
@@ -107,6 +113,7 @@ export class CreateEditPostComponent implements OnInit{
             console.error(err.code);
             this.isLoading = false;
             this.errorMessage = err.code || 'Failed to update post';
+            this.clearErrorMessage();
           }
         }
       )
@@ -117,5 +124,11 @@ export class CreateEditPostComponent implements OnInit{
   discard() {
     this.postForm.reset();
     this.router.navigate(['']);
+  }
+
+  clearErrorMessage() {
+    setTimeout(()=> {
+      this.errorMessage = null;
+    }, 2000)
   }
 }

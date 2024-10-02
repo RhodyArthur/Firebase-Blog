@@ -1,0 +1,16 @@
+<div class="delete-container" *ngIf="post$ | async as post">
+  @if (isLoading) {
+    <div id="spinner">
+      <div class="spinner"></div>
+    </div>
+  }
+
+  @if (errorMessage) {
+    <p>{{errorMessage}}</p>
+  }
+  <h3>'Are you sure you want to delete this post?</h3>
+  <div class="delete-actions">
+    <button type="submit">Cancel</button>
+    <button type="submit" (click)="deletePost(post.id)">Delete</button>
+  </div>
+</div>
