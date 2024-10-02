@@ -82,6 +82,7 @@ export class CreateEditPostComponent implements OnInit{
       // check if user is logged in
       if (!this.user) {
         this.errorMessage = 'You must be logged in to edit a post.';
+        this.router.navigate(['login'])
         return;
       }
 
