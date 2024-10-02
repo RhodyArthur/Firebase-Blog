@@ -13,9 +13,10 @@
 
 <!--  display list of posts-->
   @for (post of posts; track $index) {
-    <div class="post">
+    <div class="post" (click)="viewPost(post.id)">
       <!-- post info -->
       <div class="post-info">
+        <p>&#64;{{post.authorName}}</p>
         <p>{{post.title}}</p>
         <p>{{post.content}}</p>
       </div>

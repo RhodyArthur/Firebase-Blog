@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {catchError, Observable, of, throwError} from "rxjs";
+import {catchError, Observable, of} from "rxjs";
 import {Post} from "../../model/post";
 import {PostService} from "../../services/post.service";
 import {AsyncPipe, DatePipe, NgIf} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-post-list',
@@ -20,7 +21,8 @@ export class PostListComponent implements OnInit{
   errorMessage: string | null = null;
   isLoading: boolean = false;
 
-  constructor(private postService: PostService) {}
+
+  constructor(private postService: PostService, private router: Router) {}
 
   ngOnInit() {
     this.posts$ = this.postService.getPosts().pipe(
@@ -31,4 +33,10 @@ export class PostListComponent implements OnInit{
       })
     );
   }
+
+  // view post details
+  viewPost(postId: string) {
+    this.router.navigate(['/details', postId])
+  }
+
 }

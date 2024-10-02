@@ -1,8 +1,7 @@
-<p>create-edit-post works!</p>
 <div class="form-container">
-  <h3>Add a Post</h3>
+  <h3> {{ post ? 'Edit Post' : 'Add Post' }}</h3>
 
-  <form [formGroup]="postForm" (ngSubmit)="onSend()">
+  <form [formGroup]="postForm" (ngSubmit)="post ? onUpdate() : onSend()">
     <div class="form-item">
       <input type="text" id="title" name="title" placeholder="Title of post" formControlName="title">
     </div>
@@ -13,7 +12,9 @@
 
     <div class="form-actions">
       <button type="submit" (click)="discard()">discard</button>
-      <button type="submit">Send</button>
+
+        <button type="submit">{{post ? 'Save' : 'Send'}}</button>
+
     </div>
   </form>
 </div>

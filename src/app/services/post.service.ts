@@ -1,5 +1,15 @@
 import { Injectable } from '@angular/core';
-import {collection, collectionData, Firestore, orderBy, query, doc, docData, addDoc} from '@angular/fire/firestore';
+import {
+  collection,
+  collectionData,
+  Firestore,
+  orderBy,
+  query,
+  doc,
+  docData,
+  addDoc,
+  updateDoc
+} from '@angular/fire/firestore';
 import {catchError, from, map, Observable, retry, take, throwError} from 'rxjs';
 import { Post } from '../model/post';
 
@@ -11,11 +21,12 @@ export class PostService {
   constructor(private firestore: Firestore) {
 
   }
-  postCollection = collection(this.firestore, 'post');
+  // postCollection = collection(this.firestore, 'post');
 
   // get all posts
   getPosts(): Observable<Post[]> {
-    const postsQuery = query(this.postCollection, orderBy('createdAt', 'desc'));
+    const   postCollection = collection(this.firestore, 'post');
+    const postsQuery = query(postCollection, orderBy('createdAt', 'desc'));
     return collectionData(postsQuery, {idField: 'id'})
       .pipe(
       // catchError(err => {
@@ -33,18 +44,28 @@ export class PostService {
 
   // create a post
   createPost(post: Post) {
+    const postCollection = collection(this.firestore, 'post');
+
     post.createdAt = new Date();
     post.updatedAt = new Date();
-    const response = from(addDoc(this.postCollection, post));
+    const response = from(addDoc(postCollection, post));
     return response.pipe(
       take(1),
-      map(data => {
-        console.log(data);
-        return 'blog posted successfully'
-      }),
       retry(3),
       catchError(err => {
         return throwError(() => err.message || 'Failed to create post')
+      })
+    )
+  }
+
+  // update or edit a post
+  updatePost(postId: string, updatedPost: Partial<Post>) {
+    updatedPost.updatedAt = new Date();
+    const postRef = doc(this.firestore, 'post', postId);
+    return from(updateDoc(postRef, updatedPost)).pipe(
+      retry(3),
+      catchError(err => {
+        return throwError(() => err.message || 'Failed to update post')
       })
     )
   }
