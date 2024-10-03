@@ -4,6 +4,7 @@ import {PostService} from "../../../services/post.service";
 import {Post} from "../../../model/post";
 import {AuthService} from "../../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {User} from "@angular/fire/auth";
 
 @Component({
   selector: 'app-create-edit-post',
@@ -18,7 +19,7 @@ export class CreateEditPostComponent implements OnInit{
   postForm!: FormGroup;
   @Input() post!: Post | null;
   postId!: string | null;
-  user = this.authService.getCurrentUser();
+  user : User | null = this.authService.getCurrentUser();
   errorMessage: string | null = null;
   isLoading: boolean = false;
 
@@ -77,7 +78,7 @@ export class CreateEditPostComponent implements OnInit{
   }
 
   onUpdate() {
-    const editPost = this.postForm.value
+    const editPost = this.postForm.value;
     if (this.post && this.postId) {
       // check if user is logged in
       if (!this.user) {
@@ -94,7 +95,7 @@ export class CreateEditPostComponent implements OnInit{
         this.errorMessage = 'You are not authorized to edit this post.';
         this.clearErrorMessage();
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/']);
         }, 2000)
         return;
       }

@@ -10,7 +10,7 @@ import {
   addDoc,
   updateDoc, deleteDoc
 } from '@angular/fire/firestore';
-import {catchError, from, map, Observable, retry, take, throwError} from 'rxjs';
+import {catchError, from, Observable, retry, take, throwError} from 'rxjs';
 import { Post } from '../model/post';
 
 @Injectable({

@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Post} from "../../../model/post";
 import {Observable} from "rxjs";
 import {AsyncPipe, NgIf} from "@angular/common";
+import {User} from "@angular/fire/auth";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-delete',
@@ -18,10 +20,12 @@ import {AsyncPipe, NgIf} from "@angular/common";
 export class DeleteComponent implements OnInit{
   post$!: Observable<Post | undefined>;
   postId!: string | null;
+  user : User | null = this.authService.getCurrentUser();
   errorMessage: string | null = null;
   isLoading: boolean = false;
 
-  constructor(private postService: PostService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private postService: PostService, private route: ActivatedRoute, private router: Router,
+              private authService: AuthService) {}
 
   ngOnInit() {
     this.postId = this.route.snapshot.paramMap.get('id');
@@ -34,6 +38,26 @@ export class DeleteComponent implements OnInit{
 //   delete post
   deletePost(postId: string) {
     this.isLoading = true;
+
+    // check if user is logged in
+    if (!this.user) {
+      this.errorMessage = 'You must be logged in to delete a post.';
+      this.clearErrorMessage();
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 2000)
+      return;
+    }
+
+    // is user authorized to delete
+    if (this.postId !== this.user.uid) {
+      this.errorMessage = 'You are not authorized to delete this post.';
+      this.clearErrorMessage();
+      setTimeout(() => {
+        this.router.navigate(['/']);
+      }, 2000)
+      return;
+    }
       this.postService.deletePost(postId).subscribe({
         next: () => {
           console.log('Post deleted successfully');
@@ -47,5 +71,11 @@ export class DeleteComponent implements OnInit{
           this.isLoading = false
         }
       });
+  }
+
+  clearErrorMessage() {
+    setTimeout(()=> {
+      this.errorMessage = null;
+    }, 2000)
   }
 }
