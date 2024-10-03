@@ -8,6 +8,7 @@ import {CreateEditPostComponent} from "../modal/create-edit-post/create-edit-pos
 import {DeleteComponent} from "../modal/delete/delete.component";
 import {CommentService} from "../../services/comment.service";
 import {Comment} from "../../model/comment";
+import {CreateEditCommentComponent} from "../modal/create-edit-comment/create-edit-comment.component";
 
 @Component({
   selector: 'app-post-details',
@@ -16,7 +17,8 @@ import {Comment} from "../../model/comment";
     NgIf,
     AsyncPipe,
     CreateEditPostComponent,
-    DeleteComponent
+    DeleteComponent,
+    CreateEditCommentComponent
   ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.scss'
@@ -27,6 +29,8 @@ export class PostDetailsComponent implements OnInit{
   isLoading: boolean = false;
   showForm: boolean = false;
   showDelete: boolean = false;
+  showCommentForm: boolean = false;
+  showCommentDelete: boolean = false;
   comments$!: Observable<Comment[]>;
   errorMessage: string | null = null;
 
@@ -37,7 +41,7 @@ export class PostDetailsComponent implements OnInit{
 
     if (this.postId) {
       this.post$ = this.postService.getPost(this.postId)
-      this.comments$ = this.commentService.getComments(this.postId)
+      this.comments$ = this.commentService.getComments(this.postId);
     }
 
   }
@@ -49,5 +53,14 @@ export class PostDetailsComponent implements OnInit{
 
   displayModal() {
     this.showDelete = !this.showDelete
+  }
+  // show form for comment
+  displayCommentForm() {
+    this.showCommentForm = !this.showCommentForm;
+  }
+
+  // show delete for comment
+  displayCommentDelete() {
+    this.showCommentDelete = !this.showCommentDelete;
   }
 }

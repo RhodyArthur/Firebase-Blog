@@ -17,9 +17,9 @@
 
     <h4>Comments</h4>
     <div class="comments-container" *ngIf="comments$ | async as comments">
-<!--    @if (comments.length === 0) {-->
-<!--      <p>No comments</p>-->
-<!--    }-->
+    @if (comments.length === 0) {
+      <p>No comments</p>
+    }
 
     @for (comment of comments; track $index) {
       <div class="comments-container">
@@ -31,15 +31,10 @@
                     0
                 </span>
 
-          <span>
-                    <i class="fa-regular fa-heart"></i>
-                    0
-                </span>
-
-          <span>
-                    <i class="fa-solid fa-retweet"></i>
-                    0
-                </span>
+          <div class="comment-btns">
+            <button (click)="displayCommentForm()">Edit <i class="fa-solid fa-pen"></i></button>
+            <button (click)="displayCommentDelete()">Delete <i class="fa-solid fa-trash-can"></i></button>
+          </div>
         </div>
       </div>
     }
@@ -53,4 +48,8 @@
 
 @if (showDelete) {
   <app-delete/>
+}
+
+@if (showCommentForm) {
+  <app-create-edit-comment/>
 }

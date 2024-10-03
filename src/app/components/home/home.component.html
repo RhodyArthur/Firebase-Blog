@@ -1,8 +1,20 @@
-<p>home works!</p>
-<a [routerLink]="['/profile']">View Profile</a>
-<button (click)="displayForm()">New Post</button>
-<app-post-list/>
+<div class="home-container">
+  <header>
+    @if (user) {
+       <a [routerLink]="['/profile']">
+         <img ngSrc="{{user?.profileImg}}" alt="profile image of user" width="2rem" height="2rem">
+       </a>
+    } @else {
+      <a [routerLink]="['/login']">Login</a>
+    }
+  </header>
 
-@if (showForm) {
-  <app-create-edit-post/>
-}
+  <main>
+    <button (click)="displayForm()">New Post</button>
+    <app-post-list/>
+  </main>
+
+  @if (showForm) {
+    <app-create-edit-post/>
+  }
+</div>

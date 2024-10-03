@@ -1,1 +1,29 @@
 <p>create-edit-comment works!</p>
+<div class="form-container">
+<!--  <h3> {{ post ? 'Edit Post' : 'Add Post' }}</h3>-->
+<h3>Add Comment</h3>
+  @if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  }
+
+  @if (isLoading) {
+    <div id="spinner">
+      <div class="spinner"></div>
+    </div>
+  }
+
+  <form [formGroup]="commentForm" (ngSubmit)="onSend()">
+
+    <div class="form-item">
+      <textarea name="content" id="content" cols="30" rows="10" placeholder="Write your comment here..." formControlName="content"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" (click)="discard()">discard</button>
+
+      <button type="submit">Send</button>
+<!--      <button type="submit">{{post ? 'Save' : 'Send'}}</button>-->
+
+    </div>
+  </form>
+</div>

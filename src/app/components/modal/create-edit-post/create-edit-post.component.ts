@@ -35,7 +35,6 @@ export class CreateEditPostComponent implements OnInit{
     })
 
     this.postId = this.route.snapshot.paramMap.get('id');
-    console.log(this.postId)
   }
 
   onSend() {
@@ -59,7 +58,6 @@ export class CreateEditPostComponent implements OnInit{
               this.router.navigate(['/']);
               this.errorMessage = null;
               this.isLoading = false;
-              console.log(newPost)
             },
             error: err => {
               console.error(err.code);
@@ -108,7 +106,6 @@ export class CreateEditPostComponent implements OnInit{
             this.router.navigate(['/details', this.postId]);
             this.errorMessage = null;
             this.isLoading = false;
-            console.log(editPost, 'updated')
           },
           error: err => {
             console.error(err.code);
