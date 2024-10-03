@@ -1,0 +1,56 @@
+@use '../../../partials/breakpoints';
+@import '../../../partials/mixins';
+@import '../../../partials/variables';
+@import '../../../partials/typography';
+
+.register-container {
+  @include flex-column(3rem);
+  justify-content: center;
+  align-items: center;
+
+  form {
+    @include form-styles;
+    margin-top: 2rem;
+
+    .input-fields {
+
+      .input-group {
+        position: relative;
+
+        small {
+          position: absolute;
+          right: 0;
+          @include flex-row(flex, center, center);
+          color: $red;
+          margin-top: -1.5rem;
+        }
+      }
+
+    }
+
+    .btn {
+      @extend .input-fields;
+
+      button {
+        @include btn-styles($purple, $white);
+        border-radius: 6px;
+        @extend .body-m;
+      }
+
+      p {
+        text-align: center;
+      }
+    }
+  }
+}
+
+//media queries
+@include breakpoints.mq(tablet) {
+
+  .register-container {
+
+    form {
+      width: pxToRem(400);
+    }
+  }
+}
