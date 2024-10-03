@@ -19,4 +19,8 @@ export class HomeComponent {
   displayForm() {
     this.showForm = !this.showForm;
   }
+
+  closeForm() {
+    this.showForm = false;
+  }
 }

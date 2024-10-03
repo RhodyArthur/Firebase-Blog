@@ -9,6 +9,6 @@
   </main>
 
   @if (showForm) {
-    <app-create-edit-post/>
+      <app-create-edit-post (hideEvent)="closeForm()" />
   }
 </div>

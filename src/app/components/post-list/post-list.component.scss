@@ -6,6 +6,11 @@
   justify-content: center;
   color: $gray;
 
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
   .post {
     background-color: $dark-gray;
     @include padding-radius(1rem, 8px);

@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {PostService} from "../../../services/post.service";
 import {Post} from "../../../model/post";
 import {AuthService} from "../../../services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "@angular/fire/auth";
+
 
 @Component({
   selector: 'app-create-edit-post',
@@ -22,6 +23,8 @@ export class CreateEditPostComponent implements OnInit{
   user : User | null = this.authService.getCurrentUser();
   errorMessage: string | null = null;
   isLoading: boolean = false;
+  @Output() hideEvent = new EventEmitter<void>();
+
 
 
   constructor(private fb: FormBuilder, private postService: PostService, private authService: AuthService,
@@ -128,5 +131,10 @@ export class CreateEditPostComponent implements OnInit{
     setTimeout(()=> {
       this.errorMessage = null;
     }, 2000)
+  }
+
+//   hide form
+  hideForm() {
+    this.hideEvent.emit();
   }
 }

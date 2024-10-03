@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {catchError, Observable, of} from "rxjs";
+import { Observable } from "rxjs";
 import {Post} from "../../model/post";
 import {PostService} from "../../services/post.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {AsyncPipe, NgIf} from "@angular/common";
 import {CreateEditPostComponent} from "../modal/create-edit-post/create-edit-post.component";
 import {DeleteComponent} from "../modal/delete/delete.component";

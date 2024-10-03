@@ -1,3 +1,4 @@
+@use '../../../partials/breakpoints';
 @import '../../../partials/mixins';
 @import '../../../partials/variables';
 
@@ -9,7 +10,7 @@
     @extend .home-container;
 
     .new-post {
-      @include flex-row(flex, start, center);
+      @include flex-row(flex, space-between, center);
       gap: 1rem;
       @include padding-radius(1rem, 8px);
       background-color: $dark-gray;
@@ -25,5 +26,14 @@
         border-radius: 6px;
       }
     }
+  }
+
+}
+
+//media queries
+@include breakpoints.mq(tablet) {
+
+  .home-container {
+
   }
 }

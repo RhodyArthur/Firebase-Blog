@@ -1,3 +1,4 @@
+<div class="bg" (click)="hideForm()"></div>
 <div class="form-container">
   <h3> {{ post ? 'Edit Post' : 'Add Post' }}</h3>
 
@@ -8,16 +9,25 @@
   <form [formGroup]="postForm" (ngSubmit)="post ? onUpdate() : onSend()">
     <div class="form-item">
       <input type="text" id="title" name="title" placeholder="Title of post" formControlName="title">
+      @if (postForm.get('title')?.invalid && (postForm.get('title')?.touched || postForm.get('title')?.dirty)) {
+        @if (postForm.get('title')?.errors?.['required']) {
+          <small class="error">Title is required</small>
+        }
+      }
     </div>
 
     <div class="form-item">
       <textarea name="content" id="content" cols="30" rows="10" formControlName="content" placeholder="Write your post here"></textarea>
+      @if (postForm.get('content')?.invalid && (postForm.get('content')?.touched || postForm.get('content')?.dirty)) {
+        @if (postForm.get('content')?.errors?.['required']) {
+          <small class="error">Content is required</small>
+        }
+      }
     </div>
 
     <div class="form-actions">
-      <button type="submit" (click)="discard()">discard</button>
-
-        <button type="submit" [disabled]="postForm.invalid">{{post ? 'Save' : 'Send'}}</button>
+      <button type="submit" (click)="discard()" class="discard-btn">Discard</button>
+      <button type="submit" [disabled]="postForm.invalid" class="save-btn">{{post ? 'Save' : 'Send'}}</button>
 
     </div>
   </form>
