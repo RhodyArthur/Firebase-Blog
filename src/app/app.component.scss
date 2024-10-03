@@ -1,0 +1,38 @@
+@import '../partials/mixins';
+@import '../partials/variables';
+
+header {
+  background-color: $purple;
+  height: pxToRem(64);
+  @include flex-row(flex, space-between, center);
+  padding: 1rem;
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .user-info {
+    @include flex-row(flex, center, center);
+    gap: .5rem;
+
+    .avatar {
+      @include avatar(pxToRem(48), 50%);
+      @include flex-row(flex, center, center);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 600;
+    @include btn-styles($white, $purple);
+
+  }
+}

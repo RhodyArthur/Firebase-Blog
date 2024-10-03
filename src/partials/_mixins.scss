@@ -1,0 +1,46 @@
+@mixin flex-container($display, $position, $align) {
+    display: $display;
+    justify-content: $position;
+    align-items: $align;
+}
+
+@mixin avatar($size, $radius) {
+    width: $size;
+    height: $size;
+    border-radius: $radius;
+}
+
+@mixin flex-row($display, $position, $align) {
+    display: $display;
+    justify-content: $position;
+    align-items: $align;
+}
+
+@mixin flex-column($gap) {
+    display: flex;
+    flex-direction: column;
+    gap: $gap;
+}
+
+@mixin  btn-styles($background, $color) {
+    border-radius: 24px;
+    background-color: $background;
+    color: $color;
+    padding: .5rem 1rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+
+}
+
+
+@mixin flex-box($direction, $gap, $margin) {
+    flex-direction: $direction;
+    gap: $gap;
+    margin: $margin;
+}
+
+@mixin padding-radius($padding, $radius) {
+    padding: $padding;
+    border-radius: $radius;
+}

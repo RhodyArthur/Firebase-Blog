@@ -1,1 +1,15 @@
+<header>
+  <h1>FireBlog🔥</h1>
+  @if (user) {
+    <div class="user-info">
+      <h3>{{user.username}}</h3>
+
+      <div class="avatar" title="Profile" (click)="displayProfile()">
+          <img src="{{user?.profileImg}}" alt="profile image of user">
+      </div>
+    </div>
+  } @else {
+    <a [routerLink]="['/login']">Login</a>
+  }
+</header>
 <router-outlet/>

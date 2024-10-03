@@ -32,7 +32,9 @@ export class PostDetailsComponent implements OnInit{
   showCommentForm: boolean = false;
   showCommentDelete: boolean = false;
   comments$!: Observable<Comment[]>;
+  comment$!: Observable<Comment | undefined>;
   errorMessage: string | null = null;
+  commentId!: string | null;
 
   constructor(private postService: PostService, private route: ActivatedRoute, private commentService: CommentService) {}
 
@@ -40,8 +42,9 @@ export class PostDetailsComponent implements OnInit{
     this.postId = this.route.snapshot.paramMap.get('id');
 
     if (this.postId) {
-      this.post$ = this.postService.getPost(this.postId)
+      this.post$ = this.postService.getPost(this.postId);
       this.comments$ = this.commentService.getComments(this.postId);
+
     }
 
   }
@@ -54,9 +57,13 @@ export class PostDetailsComponent implements OnInit{
   displayModal() {
     this.showDelete = !this.showDelete
   }
+
   // show form for comment
-  displayCommentForm() {
-    this.showCommentForm = !this.showCommentForm;
+  displayCommentForm(commentId: string) {
+    this.commentId = commentId;
+    this.comment$ = this.commentService.getComment(commentId);
+    this.comment$.subscribe(data => console.log(data))
+    this.showCommentForm = true;
   }
 
   // show delete for comment

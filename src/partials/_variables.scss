@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 // colors
 $dark: #06141D;
 $dark-gray: #1B2730;
@@ -5,8 +7,15 @@ $gray: #D9D9D9;
 $blue: #03A9F4;
 $purple: #7C5DFA;
 $white: #FFFFFF;
+$greyish-blue: #5A698F;
+$red: #FC4747;
 $black: #2B283A;
 $disabled-color: #c0c0c0;
 
 // line-height
 $line-height: 1.2;
+
+//convert px to rem
+@function pxToRem($value) {
+    @return math.div($value, 16)+rem;
+}

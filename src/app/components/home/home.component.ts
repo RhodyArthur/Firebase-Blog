@@ -15,29 +15,7 @@ import {NgOptimizedImage} from "@angular/common";
 })
 export class HomeComponent {
   showForm: boolean = false;
-  user: UserInterface | null = null;
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    const firebaseUser = this.authService.getCurrentUser();
-    if (firebaseUser) {
-      this.user = {
-        email: firebaseUser.email,
-        username: firebaseUser.displayName,
-        profileImg: firebaseUser.photoURL
-      };
-    } else {
-      const storedUser = this.authService.getUserData();
-      if (storedUser) {
-        this.user = {
-          email: storedUser.email,
-          username: storedUser.username,
-          profileImg: storedUser.profileImage
-        };
-      }
-    }
-  }
   displayForm() {
     this.showForm = !this.showForm;
   }

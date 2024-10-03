@@ -1,16 +1,10 @@
 <div class="home-container">
-  <header>
-    @if (user) {
-       <a [routerLink]="['/profile']">
-         <img ngSrc="{{user?.profileImg}}" alt="profile image of user" width="2rem" height="2rem">
-       </a>
-    } @else {
-      <a [routerLink]="['/login']">Login</a>
-    }
-  </header>
-
   <main>
-    <button (click)="displayForm()">New Post</button>
+    <div class="new-post">
+      <p>What's on your mind?</p>
+      <button (click)="displayForm()">Make a Post</button>
+    </div>
+
     <app-post-list/>
   </main>
 

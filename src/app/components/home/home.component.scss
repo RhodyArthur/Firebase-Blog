@@ -1,0 +1,29 @@
+@import '../../../partials/mixins';
+@import '../../../partials/variables';
+
+.home-container {
+  @include flex-column(2rem);
+  padding: 1rem;
+
+  main {
+    @extend .home-container;
+
+    .new-post {
+      @include flex-row(flex, start, center);
+      gap: 1rem;
+      @include padding-radius(1rem, 8px);
+      background-color: $dark-gray;
+
+      p {
+        font-size: 1rem;
+        font-weight: 300;
+        font-style: italic;
+      }
+
+      button {
+        @include btn-styles($purple, $white);
+        border-radius: 6px;
+      }
+    }
+  }
+}
