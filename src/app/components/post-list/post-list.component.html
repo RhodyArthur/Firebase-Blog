@@ -17,11 +17,22 @@
     <div class="post" (click)="viewPost(post.id)">
       <!-- post info -->
       <div class="post-info">
-        <p>&#64;{{post.authorName}}</p>
-        <p>{{post.title}}</p>
-        <p>{{post.content}}</p>
-      </div>
+        <div class="user-details">
+          @if (user) {
+          <div class="avatar">
+            <img src="{{user?.profileImg}}" alt="profile image of user">
+          </div>
 
+          }
+
+          <div>
+            <p>&#64;{{post.authorName}}</p>
+            <p>{{post.title}}</p>
+            <p>{{post.content}}</p>
+          </div>
+        </div>
+
+<!--        post actions-->
       <div class="post-actions">
             <span>
                 <i class="fa-regular fa-comment-dots"></i>
@@ -38,6 +49,8 @@
                 Add Comment
             </span>
       </div>
+      </div>
+
 
     </div>
   }

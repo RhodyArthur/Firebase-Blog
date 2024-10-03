@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import {NgOptimizedImage} from "@angular/common";
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
+  imports: [ReactiveFormsModule, RouterLink, RouterLinkActive, NgOptimizedImage],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -32,7 +33,7 @@ export class LoginComponent {
       const {email, password} = this.loginForm.getRawValue();
 
       this.isLoading = true;
-  
+
       this.authService.login(email, password)
       .subscribe({
         next: () => {

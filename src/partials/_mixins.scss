@@ -44,3 +44,71 @@
     padding: $padding;
     border-radius: $radius;
 }
+
+@mixin form-styles {
+        @include flex-column(2rem);
+        background-color: $dark-gray;
+        padding: 1.5rem;
+        border-radius: 10px;
+        width: pxToRem(327);
+    
+        h3 {
+          color: $white;
+          @extend .heading-l;
+        }
+    
+        .input-fields {
+          @include flex-column(1.5rem);
+    
+          input {
+            caret-color: $greyish-blue;
+            width: 100%;
+            border: none;
+            outline: none;
+            background-color: inherit;
+            color: $white;
+            border-bottom: 1px solid $greyish-blue;
+            padding: .5rem 0;
+          }
+        }
+    
+        .login-actions {
+    
+          .btn {
+            @extend .input-fields;
+    
+            button {
+              @include btn-styles($purple, $white);
+              border-radius: 6px;
+              @extend .body-m;
+              @include flex-row(flex, center, center);
+              gap: .5rem;
+    
+                img {
+                  width: 18px;
+                  height: 18px;
+                  display: inline-block;
+                }
+    
+    
+              &:hover {
+                background-color: $white;
+                color: $purple;
+              }
+            }
+          }
+    
+          p {
+            text-align: center;
+            color: $white;
+            @extend .body-m;
+            padding: .5rem;
+    
+            a  {
+              text-decoration: none;
+              color: $purple;
+            }
+          }
+        }
+      
+}

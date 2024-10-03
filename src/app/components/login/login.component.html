@@ -1,8 +1,7 @@
-<div class="container">
-    <h3>Log In</h3>
-  
+<div class="login-container">
+
     @if (errorMessage) {
-      <p>{{errorMessage}}</p>
+      <p class="error-message">{{errorMessage}}</p>
     }
 
     @if (isLoading) {
@@ -10,39 +9,52 @@
             <div class="spinner"></div>
         </div>
     }
-  
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  
-      <!-- email -->
-      <input type="email" name="email" id="email" placeholder="Enter email" formControlName="email"/>
-      @if (loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)) {
-        @if (loginForm.get('email')?.errors?.['required']) {
-            <small class="error">Can't be empty</small>
+      <h3>Log In</h3>
+
+      <div class="input-fields">
+        <!-- email -->
+        <div class="input-group">
+          <input type="email" name="email" id="email" placeholder="Enter email" formControlName="email"/>
+          @if (loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)) {
+            @if (loginForm.get('email')?.errors?.['required']) {
+                <small class="error">Can't be empty</small>
+            }
+            @if (loginForm.get('email')?.errors?.['email']) {
+                <small class="error">Invalid Email</small>
+            }
         }
-        @if (loginForm.get('email')?.errors?.['email']) {
-            <small class="error">Invalid Email</small>
+        </div>
+
+        <!-- password -->
+        <div class="input-group">
+          <input type="password" name="password" id="password" placeholder="Enter password" formControlName="password"/>
+          @if(loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)){
+            @if (loginForm.get('password')?.errors?.['required']) {
+                <small class="error">Can't be empty</small>
+            }
+            @if (loginForm.get('password')?.errors?.['minlength']) {
+                <small class="error">Password must be at least 8 characters</small>
+            }
         }
-    }
-  
-      <!-- password -->
-      <input type="password" name="password" id="password" placeholder="Enter password" formControlName="password"/>
-      @if(loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)){
-        @if (loginForm.get('password')?.errors?.['required']) {
-            <small class="error">Can't be empty</small>
-        }
-        @if (loginForm.get('password')?.errors?.['minlength']) {
-            <small class="error">Password must be at least 8 characters</small>
-        }
-    }
+        </div>
+      </div>
+
 
         <!-- button -->
-      <div class="btn">
-        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      <div class="login-actions">
+        <div class="btn">
+          <button type="submit" [disabled]="loginForm.invalid">Login</button>
+          <button type="submit" (click)="onGoogleSignIn()">
+              <img src="../../../../../assets/img.png" alt="google icon">
+              Sign In with Google
+          </button>
+        </div>
+
         <p>Don't have an account?
             <a [routerLink]="['/','register']" routerLinkActive="active-link" aria-label="Sign up">Sign Up</a></p>
     </div>
     </form>
 
-    <button type="submit" (click)="onGoogleSignIn()">Sign In with Google</button>
   </div>
-  
