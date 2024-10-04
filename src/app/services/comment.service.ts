@@ -29,7 +29,7 @@ export class CommentService {
   }
 
   // Read a single comment
-  getComment(postId: string | null, id: string): Observable<Comment | undefined> {
+  getComment(postId: string | null, id: string | null): Observable<Comment | undefined> {
     const postRef = doc(this.firestore, `post/${postId}/comments/${id}`)
     return docData(postRef, {idField: 'id'}) as Observable<Comment | undefined>;
   }
@@ -67,9 +67,9 @@ export class CommentService {
     )
   }
 
-  //   delete post
-  deletePost(commentId: string): Observable<void>{
-    const postRef = doc(this.firestore, 'comments', commentId)
+  //   delete comment
+  deleteComment(postId:string | null, commentId: string | null): Observable<void>{
+    const postRef = doc(this.firestore, `post/${postId}/comments/${commentId}`)
     return  from(deleteDoc(postRef)).pipe(
       retry(3),
       catchError(err => {

@@ -9,6 +9,7 @@ import {DeleteComponent} from "../modal/delete/delete.component";
 import {CommentService} from "../../services/comment.service";
 import {Comment} from "../../model/comment";
 import {CreateEditCommentComponent} from "../modal/create-edit-comment/create-edit-comment.component";
+import {DeleteCommentComponent} from "../modal/delete-comment/delete-comment.component";
 
 @Component({
   selector: 'app-post-details',
@@ -19,7 +20,9 @@ import {CreateEditCommentComponent} from "../modal/create-edit-comment/create-ed
     CreateEditPostComponent,
     DeleteComponent,
     CreateEditCommentComponent,
-    TitleCasePipe
+    TitleCasePipe,
+    DeleteCommentComponent,
+    DeleteCommentComponent
   ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.scss'
@@ -67,12 +70,21 @@ export class PostDetailsComponent implements OnInit{
   }
 
   // show delete for comment
-  displayCommentDelete() {
-    this.showCommentDelete = !this.showCommentDelete;
+  displayCommentDelete(commentId: string) {
+    this.commentId = commentId
+    this.showCommentDelete = true;
   }
 
 //   hide comment form
   hideCommentForm() {
     this.showCommentForm = false;
+  }
+
+  hideDeletePost() {
+    this.showDelete = false;
+  }
+
+  hideDeleteComment() {
+    this.showCommentDelete = false;
   }
 }

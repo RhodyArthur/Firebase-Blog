@@ -1,5 +1,5 @@
 <div class="bg" (click)="hideModal()"></div>
-<div class="delete-container" *ngIf="post$ | async as post">
+<div class="delete-container" *ngIf="comment$ | async as comment">
   @if (isLoading) {
     <div id="spinner">
       <div class="spinner"></div>
@@ -9,10 +9,11 @@
   @if (errorMessage) {
     <p class="error-message">{{errorMessage}}</p>
   }
-  <h3>Delete Post</h3>
-  <p class="msg">'Are you sure you want to delete this post?'</p>
+  <h3>Delete Comment</h3>
+  <p class="msg">'Are you sure you want to delete this comment with id: {{comment.id}}?'</p>
   <div class="delete-actions">
     <button type="submit" class="cancel-btn" (click)="hideModal()">Cancel</button>
-    <button type="submit" class="delete-btn" (click)="deletePost(post.id)">Delete</button>
+    <button type="submit" class="delete-btn" (click)="deleteComment()">Delete</button>
   </div>
 </div>
+

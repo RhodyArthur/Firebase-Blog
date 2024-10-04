@@ -110,7 +110,7 @@
 //media queries
 @include breakpoints.mq(tablet) {
 
-  .form-container-container {
+  .form-container {
      width: pxToRem(400);
   }
 }

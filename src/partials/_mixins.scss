@@ -51,15 +51,15 @@
         padding: 1.5rem;
         border-radius: 10px;
         width: pxToRem(327);
-    
+
         h3 {
           color: $white;
           @extend .heading-l;
         }
-    
+
         .input-fields {
           @include flex-column(1.5rem);
-    
+
           input {
             caret-color: $greyish-blue;
             width: 100%;
@@ -71,46 +71,97 @@
             padding: .5rem 0;
           }
 
-          
+
         }
-    
+
         .login-actions {
-    
+
           .btn {
             @extend .input-fields;
-    
+
             button {
               @include btn-styles($purple, $white);
               border-radius: 6px;
               @extend .body-m;
               @include flex-row(flex, center, center);
               gap: .5rem;
-    
+
                 img {
                   width: 18px;
                   height: 18px;
                   display: inline-block;
                 }
-    
-    
+
+
               &:hover {
                 background-color: $white;
                 color: $purple;
               }
             }
           }
-    
+
           p {
             text-align: center;
             color: $white;
             @extend .body-m;
             padding: .5rem;
-    
+
             a  {
               text-decoration: none;
               color: $purple;
             }
           }
         }
-      
+
+}
+
+@mixin delete-styles {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background-color: $dark-gray;
+  @include padding-radius(1rem, 8px);
+  @include flex-column(1rem);
+  width: pxToRem(327);
+
+  h3 {
+    color: $white;
+    @extend .heading-l;
+    font-weight: 300;
+  }
+
+  .msg {
+    color: $white;
+    @extend .body-m;
+  }
+
+  .delete-actions {
+    @include flex-container(flex, end, center);
+    gap: 1rem;
+    margin-top: .5rem;
+
+    button {
+      padding: .5rem 1rem;
+      border-radius: 4px;
+      outline: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      background-color: $red;
+      color: $white;
+
+      &:hover {
+        background-color: #f16969;
+      }
+    }
+
+    .cancel-btn {
+      background-color: $white;
+      color: $red;
+    }
+  }
 }

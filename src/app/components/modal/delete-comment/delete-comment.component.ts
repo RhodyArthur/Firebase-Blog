@@ -1,44 +1,53 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Observable} from "rxjs";
+import {Post} from "../../../model/post";
+import {User} from "@angular/fire/auth";
 import {PostService} from "../../../services/post.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Post} from "../../../model/post";
-import {Observable} from "rxjs";
-import {AsyncPipe, NgIf} from "@angular/common";
-import {User} from "@angular/fire/auth";
 import {AuthService} from "../../../services/auth.service";
+import {CommentService} from "../../../services/comment.service";
+import {Comment} from "../../../model/comment";
+import {AsyncPipe, NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-delete',
+  selector: 'app-delete-comment',
   standalone: true,
   imports: [
     AsyncPipe,
     NgIf
   ],
-  templateUrl: './delete.component.html',
-  styleUrl: './delete.component.scss'
+  templateUrl: './delete-comment.component.html',
+  styleUrl: './delete-comment.component.scss'
 })
-export class DeleteComponent implements OnInit{
+export class DeleteCommentComponent implements OnInit{
+
   post$!: Observable<Post | undefined>;
+  comment$!: Observable<Comment | undefined>;
   postId!: string | null;
+  @Input() commentId!: string | null;
+  comment!: Comment | undefined;
   user : User | null = this.authService.getCurrentUser();
   errorMessage: string | null = null;
   isLoading: boolean = false;
   @Output() hideEvent = new EventEmitter<void>();
 
   constructor(private postService: PostService, private route: ActivatedRoute, private router: Router,
-              private authService: AuthService) {}
+              private authService: AuthService, private commentService: CommentService) {}
 
   ngOnInit() {
     this.postId = this.route.snapshot.paramMap.get('id');
 
     if (this.postId) {
-      this.post$ = this.postService.getPost(this.postId)
+      this.post$ = this.postService.getPost(this.postId);
+      this.comment$ = this.commentService.getComment(this.postId, this.commentId);
+      this.comment$.subscribe(data => {
+        this.comment = data
+      })
     }
   }
 
-//   delete post
-  deletePost(postId: string) {
-
+//   delete comment
+  deleteComment() {
     // check if user is logged in
     if (!this.user) {
       this.errorMessage = 'You must be logged in to delete a post.';
@@ -50,7 +59,7 @@ export class DeleteComponent implements OnInit{
     }
 
     // is user authorized to delete
-    if (this.postId !== this.user.uid) {
+    if (this.comment?.author !== this.user.displayName) {
       this.errorMessage = 'You are not authorized to delete this post.';
       this.clearErrorMessage();
       setTimeout(() => {
@@ -59,18 +68,16 @@ export class DeleteComponent implements OnInit{
       return;
     }
 
-    this.isLoading = true;
-
-    this.postService.deletePost(postId).subscribe({
+    this.commentService.deleteComment(this.postId, this.commentId).subscribe({
       next: () => {
-        console.log('Post deleted successfully');
+        console.log('Comment deleted successfully');
         this.postService.getPosts();
-        this.router.navigate(['/']);
+        this.router.navigate(['/details', this.postId]);
         this.isLoading = false;
         this.hideModal();
       },
       error: (err) => {
-        console.error('Error deleting post:', err);
+        console.error('Error deleting comment:', err);
         this.errorMessage = err.code;
         this.isLoading = false
       }
