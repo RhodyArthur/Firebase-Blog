@@ -23,6 +23,7 @@
 
     @for (comment of comments; track $index) {
       <div class="comments-container">
+        <p>&#64;{{comment.author | titlecase}}</p>
         <p>{{comment.content}}</p>
 
         <div class="comment-actions">
@@ -51,5 +52,5 @@
 }
 
 @if (showCommentForm) {
-  <app-create-edit-comment *ngIf="comment$ | async as comment" [comment]="comment"/>
+  <app-create-edit-comment *ngIf="comment$ | async as comment" [comment]="comment" (hideEvent)="hideCommentForm()"/>
 }

@@ -3,8 +3,91 @@
 @import '../../../../partials/variables';
 @import '../../../../partials/typography';
 
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
 .form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background-color: $dark-gray;
+  @include padding-radius(1rem, 8px);
+  @include flex-column(1rem);
+  width: pxToRem(327);
+
+  h3 {
+    color: $white;
+    @extend .heading-l;
+    font-weight: 300;
+  }
+
+  .form-item {
+
+    textarea {
+      background-color: $dark-gray;
+      caret-color: $greyish-blue;
+      width: 100%;
+      resize: none;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      outline: none;
+      color: $gray;
+
+      &:hover {
+        border: 1px solid $purple;
+      }
+    }
+
+    small {
+      position: absolute;
+      right: 5%;
+      @include flex-row(flex, center, center);
+      color: $red;
+      margin-top: -1.5rem;
+    }
+
+  }
+
+  .form-actions {
+    @include flex-container(flex, end, center);
+    gap: 1rem;
+    margin-top: .5rem;
+
+    button {
+      padding: .5rem 1rem;
+      border-radius: 4px;
+      outline: none;
+      border: none;
+      color: $gray;
+    }
+
+    .save-btn {
+      background-color: $purple;
+
+      &:hover {
+        background-color: green;
+      }
+
+      &:disabled {
+        background-color: $disabled-color;
+        color: $dark;
+        cursor: not-allowed;
+      }
+    }
+
+    .discard-btn {
+      background-color: $red;
+    }
+  }
 }

@@ -1,5 +1,6 @@
+<div class="bg"></div>
 <div class="form-container">
-  <h3> {{ comment ? 'Edit Comment' : 'Make a Comment' }}</h3>
+  <h3> {{ comment ? 'Edit Comment' : 'Add Comment' }}</h3>
   @if (errorMessage) {
     <p class="error-message">{{ errorMessage }}</p>
   }
@@ -14,14 +15,16 @@
 
     <div class="form-item">
       <textarea name="content" id="content" cols="30" rows="10" placeholder="Write your comment here..." formControlName="content"></textarea>
+      @if (commentForm.get('content')?.invalid && (commentForm.get('content')?.touched || commentForm.get('content')?.dirty)) {
+        @if (commentForm.get('content')?.errors?.['required']) {
+          <small class="error">Content is required</small>
+        }
+      }
     </div>
 
     <div class="form-actions">
-      <button type="submit" (click)="discard()">discard</button>
-
-      <button type="submit">Send</button>
-      <button type="submit">{{comment ? 'Save' : 'Send'}}</button>
-
+      <button type="submit" (click)="discard()" class="discard-btn">Discard</button>
+      <button type="submit" class="save-btn">{{comment ? 'Save' : 'Send'}}</button>
     </div>
   </form>
 </div>

@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, User, UserCredential} from '@angular/fire/auth';
 import { getDownloadURL, ref, uploadBytes, Storage } from '@angular/fire/storage';
 import {from, map, Observable, switchMap} from 'rxjs';
+import {isPlatformBrowser} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private firebaseAuth: Auth, private storage: Storage) { }
+  constructor(private firebaseAuth: Auth, private storage: Storage, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   // create a user
   register(email: string, username: string, password: string): Observable<User> {
@@ -17,8 +18,9 @@ export class AuthService {
         email,
         password
       )
-      .then((response) => {
-        return updateProfile(response.user, {displayName: username}).then(() => response.user)})
+      .then(async (response) => {
+        await updateProfile(response.user, {displayName: username});
+        return response.user;})
       .then((user) => {
         this.setUserData(user)
         return user;
@@ -38,7 +40,7 @@ export class AuthService {
     return from(promise)
   }
 
-  // sign in with google
+  // sign in with Google
   googleSignIn(): Observable<User> {
     const provider = new GoogleAuthProvider();
     const promise = signInWithPopup(this.firebaseAuth, provider)
@@ -68,14 +70,16 @@ export class AuthService {
 
   // set data to local storage
   setUserData(user: User | null) {
-      const userData = { email : user?.email, username: user?.displayName, profileImage: user?.photoURL};   
+      const userData = { email : user?.email, username: user?.displayName, profileImage: user?.photoURL};
       localStorage.setItem('userData', JSON.stringify(userData))
   }
 
   // get user from local storage
   getUserData() {
+    if (isPlatformBrowser(this.platformId)) {
     const storedUser = localStorage.getItem('userData');
     return storedUser ? JSON.parse(storedUser) : null;
+  }
   }
 
   // clear user from local storage

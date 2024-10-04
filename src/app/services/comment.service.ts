@@ -29,8 +29,8 @@ export class CommentService {
   }
 
   // Read a single comment
-  getComment(id: string): Observable<Comment | undefined> {
-    const postRef = doc(this.firestore, 'comments', id)
+  getComment(postId: string | null, id: string): Observable<Comment | undefined> {
+    const postRef = doc(this.firestore, `post/${postId}/comments/${id}`)
     return docData(postRef, {idField: 'id'}) as Observable<Comment | undefined>;
   }
 
@@ -38,8 +38,13 @@ export class CommentService {
   createComment(postId: string, comment: Comment) {
     const commentCollection = collection(this.firestore, `post/${postId}/comments`);
 
+    const newCommentDoc = doc(commentCollection);
+    const commentId = newCommentDoc.id
+
     comment.createdAt = new Date();
     comment.updatedAt = new Date();
+    comment.id = commentId;
+
     const response = from(addDoc(commentCollection, comment));
     return response.pipe(
       take(1),
@@ -51,9 +56,9 @@ export class CommentService {
   }
 
   // update or edit a comment
-  updateComment(commentId: string, updatedComment: Partial<Comment>) {
+  updateComment(postId:string | null, commentId: string, updatedComment: Partial<Comment>) {
     updatedComment.updatedAt = new Date();
-    const postRef = doc(this.firestore, 'comments', commentId);
+    const postRef = doc(this.firestore, `post/${postId}/comments/${commentId}`);
     return from(updateDoc(postRef, updatedComment)).pipe(
       retry(3),
       catchError(err => {

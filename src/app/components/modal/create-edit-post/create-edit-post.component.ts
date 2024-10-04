@@ -61,6 +61,7 @@ export class CreateEditPostComponent implements OnInit{
               this.router.navigate(['/']);
               this.errorMessage = null;
               this.isLoading = false;
+              this.hideForm();
             },
             error: err => {
               console.error(err.code);
@@ -109,6 +110,7 @@ export class CreateEditPostComponent implements OnInit{
             this.router.navigate(['/details', this.postId]);
             this.errorMessage = null;
             this.isLoading = false;
+            this.hideForm();
           },
           error: err => {
             console.error(err.code);
@@ -124,7 +126,7 @@ export class CreateEditPostComponent implements OnInit{
   // Discard changes
   discard() {
     this.postForm.reset();
-    this.router.navigate(['']);
+    this.hideForm();
   }
 
   clearErrorMessage() {

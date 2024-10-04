@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CommentService} from "../../../services/comment.service";
@@ -19,13 +19,16 @@ export class CreateEditCommentComponent implements OnInit{
   errorMessage: string | null = null;
   isLoading: boolean = false;
   commentForm!: FormGroup;
-  @Input() comment!: Comment | null
+  @Input() comment!: Comment | null;
   postId!: string | null;
   user : User | null = this.authService.getCurrentUser();
+  @Output() hideEvent = new EventEmitter<void>();
+  @Input() postIdFromList!: string | null;
 
   constructor(private fb: FormBuilder, private router: Router, private  route: ActivatedRoute,
               private commentService: CommentService, private authService: AuthService) {
   }
+
   ngOnInit() {
     this.commentForm = this.fb.group({
       content: [this.comment?.content || '', Validators.required]
@@ -43,8 +46,7 @@ export class CreateEditCommentComponent implements OnInit{
         ...this.commentForm.value
       };
 
-        this.isLoading = true;
-      if (this.postId) {
+      if (this.postIdFromList) {
         if (!this.user) {
           this.errorMessage = 'You must be logged in to post a comment.';
           this.clearErrorMessage();
@@ -53,14 +55,17 @@ export class CreateEditCommentComponent implements OnInit{
           }, 2000)
           return;
         }
+        console.log(this.postId, this.user)
+        this.isLoading = true;
 
-        this.commentService.createComment(this.postId, newComment).subscribe({
+        this.commentService.createComment(this.postIdFromList, newComment).subscribe({
           next: () => {
             this.comment = newComment;
             this.commentForm.reset();
             this.router.navigate(['/']);
             this.errorMessage = null;
             this.isLoading = false;
+            this.hideForm();
           },
           error: err => {
             console.error(err.code);
@@ -92,22 +97,26 @@ export class CreateEditCommentComponent implements OnInit{
         setTimeout(() => {
           this.router.navigate(['/']);
         }, 2000)
+        console.log(this.comment.author, this.user.displayName)
         return;
       }
 
+      this.isLoading = true;
+
     //   edit comment
-      this.commentService.updateComment(this.comment.id, editComment).subscribe({
+      this.commentService.updateComment( this.postId, this.comment.id, editComment).subscribe({
         next: () => {
           this.comment = editComment;
           this.commentForm.reset();
           this.router.navigate(['/details', this.postId]);
           this.errorMessage = null;
           this.isLoading = false;
+          this.hideForm();
         },
         error: err => {
           console.error(err.code);
           this.isLoading = false;
-          this.errorMessage = err.code || 'Failed to update post';
+          this.errorMessage = err.code + ' Failed to update post';
           this.clearErrorMessage();
         }
       })
@@ -118,12 +127,18 @@ export class CreateEditCommentComponent implements OnInit{
   // Discard changes
   discard() {
     this.commentForm.reset();
-    this.router.navigate(['']);
+    this.hideForm();
   }
 
   clearErrorMessage() {
     setTimeout(()=> {
       this.errorMessage = null;
     }, 2000)
+  }
+
+
+//   hide form
+  hideForm() {
+    this.hideEvent.emit();
   }
 }

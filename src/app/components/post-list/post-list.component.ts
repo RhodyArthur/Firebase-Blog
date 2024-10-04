@@ -5,6 +5,7 @@ import {PostService} from "../../services/post.service";
 import {AsyncPipe, DatePipe, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
 import {UserInterface} from "../../model/user-interface";
+import {CreateEditCommentComponent} from "../modal/create-edit-comment/create-edit-comment.component";
 
 @Component({
   selector: 'app-post-list',
@@ -12,7 +13,8 @@ import {UserInterface} from "../../model/user-interface";
   imports: [
     NgIf,
     AsyncPipe,
-    DatePipe
+    DatePipe,
+    CreateEditCommentComponent
   ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.scss'
@@ -22,6 +24,8 @@ export class PostListComponent implements OnInit{
   errorMessage: string | null = null;
   isLoading: boolean = false;
   @Input() user: UserInterface | null = null;
+  showCommentForm: boolean = false;
+  currentPostId: string | null = null;
 
 
   constructor(private postService: PostService, private router: Router) {}
@@ -44,4 +48,15 @@ export class PostListComponent implements OnInit{
     this.router.navigate(['/details', postId])
   }
 
+  // display add comment form
+  displayCommentForm(postId: string) {
+    this.currentPostId = postId;
+    this.showCommentForm = true;
+    console.log(postId)
+  }
+
+  hideCommentForm() {
+    this.currentPostId = null;
+    this.showCommentForm = false;
+  }
 }

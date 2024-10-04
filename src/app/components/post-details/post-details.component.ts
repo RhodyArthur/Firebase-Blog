@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import {Post} from "../../model/post";
 import {PostService} from "../../services/post.service";
 import {ActivatedRoute} from "@angular/router";
-import {AsyncPipe, NgIf} from "@angular/common";
+import {AsyncPipe, NgIf, TitleCasePipe} from "@angular/common";
 import {CreateEditPostComponent} from "../modal/create-edit-post/create-edit-post.component";
 import {DeleteComponent} from "../modal/delete/delete.component";
 import {CommentService} from "../../services/comment.service";
@@ -18,7 +18,8 @@ import {CreateEditCommentComponent} from "../modal/create-edit-comment/create-ed
     AsyncPipe,
     CreateEditPostComponent,
     DeleteComponent,
-    CreateEditCommentComponent
+    CreateEditCommentComponent,
+    TitleCasePipe
   ],
   templateUrl: './post-details.component.html',
   styleUrl: './post-details.component.scss'
@@ -61,13 +62,17 @@ export class PostDetailsComponent implements OnInit{
   // show form for comment
   displayCommentForm(commentId: string) {
     this.commentId = commentId;
-    this.comment$ = this.commentService.getComment(commentId);
-    this.comment$.subscribe(data => console.log(data))
+    this.comment$ = this.commentService.getComment(this.postId, commentId);
     this.showCommentForm = true;
   }
 
   // show delete for comment
   displayCommentDelete() {
     this.showCommentDelete = !this.showCommentDelete;
+  }
+
+//   hide comment form
+  hideCommentForm() {
+    this.showCommentForm = false;
   }
 }
