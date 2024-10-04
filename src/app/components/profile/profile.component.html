@@ -1,9 +1,16 @@
-<p>profile works!</p>
 <div class="container">
     @if (user) {
-        <p>{{ user.username }}</p>
-        <p>{{ user.email }}</p>
-        <img [src]="user.profileImg" alt="user profile image">
+      <div class="user-info">
+
+        <div class="avatar">
+          <img [src]="user.profileImg" alt="user profile image">
+        </div>
+
+        <div class="user-details">
+          <p>Username: {{ user.username }}</p>
+          <p>Email: {{ user.email }}</p>
+        </div>
+      </div>
     }
 
     <!-- logout btn -->

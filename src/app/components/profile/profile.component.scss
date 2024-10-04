@@ -1,0 +1,39 @@
+@use '../../../partials/breakpoints';
+@import '../../../partials/mixins';
+@import '../../../partials/variables';
+@import '../../../partials/typography';
+
+
+.container {
+  @include flex-column(1.5rem);
+  justify-content: center;
+  align-items: center;
+  width: pxToRem(330);
+  padding: 2rem;
+  background-color: $dark-gray;
+  border-radius: 8px;
+  margin: 4rem auto;
+
+
+  .user-info {
+    @include flex-column(.5rem);
+
+    .avatar {
+      width: pxToRem(150);
+      height: pxToRem(150);
+      border-radius: 50%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  button {
+    @include btn-styles($purple, $white);
+    border-radius: 6px;
+  }
+}

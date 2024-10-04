@@ -10,6 +10,7 @@ import {CommentService} from "../../services/comment.service";
 import {Comment} from "../../model/comment";
 import {CreateEditCommentComponent} from "../modal/create-edit-comment/create-edit-comment.component";
 import {DeleteCommentComponent} from "../modal/delete-comment/delete-comment.component";
+import {MetaService} from "../../services/meta.service";
 
 @Component({
   selector: 'app-post-details',
@@ -39,15 +40,25 @@ export class PostDetailsComponent implements OnInit{
   comment$!: Observable<Comment | undefined>;
   errorMessage: string | null = null;
   commentId!: string | null;
+  post!: Post | undefined;
 
   constructor(private postService: PostService, private route: ActivatedRoute, private commentService: CommentService,
-              private router: Router) {}
+              private router: Router, private metaService: MetaService) {}
 
   ngOnInit() {
     this.postId = this.route.snapshot.paramMap.get('id');
 
     if (this.postId) {
       this.post$ = this.postService.getPost(this.postId);
+      this.postService.getPost(this.postId).subscribe(post => {
+        this.post = post;
+        this.metaService.setMetaTags({
+          title: post?.title,
+          description: post?.content.substring(0, 150),
+          keywords: 'blog, firebase, angular, seo, comment, authentication'
+        })
+
+      })
       this.comments$ = this.commentService.getComments(this.postId);
 
     }
@@ -81,6 +92,12 @@ export class PostDetailsComponent implements OnInit{
     this.showCommentForm = false;
   }
 
+  // hide post form
+  hidePostForm() {
+    this.showForm = false;
+  }
+
+  // hide post delete modal
   hideDeletePost() {
     this.showDelete = false;
   }

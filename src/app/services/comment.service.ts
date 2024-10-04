@@ -8,9 +8,9 @@ import {
   Firestore,
   orderBy,
   query,
-  updateDoc
+  updateDoc, where
 } from "@angular/fire/firestore";
-import {catchError, from, Observable, retry, take, throwError} from "rxjs";
+import {catchError, from, map, Observable, retry, take, throwError} from "rxjs";
 import {Comment} from "../model/comment";
 
 @Injectable({
@@ -77,4 +77,12 @@ export class CommentService {
       })
     )
   }
+
+//   get comments count
+//   getCommentsCount(postId: string | null): Observable<number> {
+//     const postRef = doc(this.firestore, `post/${postId}/comments`)
+//     const commentsQuery = query(postRef, where('postId', '==', postId));
+//     return collectionData(commentsQuery).pipe(
+//       map(comments => comments.length)
+//   }
 }

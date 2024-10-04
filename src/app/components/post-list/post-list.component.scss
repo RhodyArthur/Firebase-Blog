@@ -1,3 +1,4 @@
+@use '../../../partials/breakpoints';
 @import '../../../partials/mixins';
 @import '../../../partials/variables';
 
@@ -23,6 +24,7 @@
       .user-details {
         @include flex-row(flex, start, center);
         gap: 1rem;
+        cursor: pointer;
 
         .avatar {
           @include avatar(pxToRem(48), 50%);
@@ -51,3 +53,4 @@
     }
   }
 }
+
