@@ -1,0 +1,69 @@
+@use '../../../partials/breakpoints';
+@import '../../../partials/mixins';
+@import '../../../partials/variables';
+@import '../../../partials/typography';
+
+.details-container {
+  @include flex-container(flex, center, null);
+  @include flex-box(column, 1rem, 1.25rem);
+  line-height: $line-height;
+  color: $gray;
+
+
+  h2 {
+    color: $blue;
+    font-style: italic;
+  }
+
+  h4 {
+    text-align: left;
+  }
+
+  .details {
+
+    .details-actions {
+      @include flex-container(flex, end, center);
+      gap: 1.5rem;
+      padding: .5rem 1rem;
+
+      button {
+        outline: none;
+        border: 1px solid transparent;
+        background-color: transparent;
+        color: $blue;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+    }
+  }
+
+  .comments-container {
+    @include flex-column(.5rem);
+    background-color: $dark-gray;
+    padding: .5rem;
+    border-radius: 8px;
+
+    .comment-actions {
+      @include flex-container(flex, space-between, center);
+
+      i {
+        color: $blue;
+      }
+
+      .comment-btn {
+        display: flex;
+        gap: 1rem;
+
+        button {
+          outline: none;
+          border: 1px solid transparent;
+          background-color: transparent;
+          color: $blue;
+          cursor: pointer;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

@@ -5,6 +5,10 @@
 }
 @else {
   <div class="details-container" *ngIf="post$ | async as post">
+    <div class="back" (click)="goBack()">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      Go Back
+    </div>
     <h2>{{post.title}}</h2>
     <div class="details">
       <h3>{{post.content}}</h3>
@@ -32,7 +36,7 @@
                     0
                 </span>
 
-          <div class="comment-btns">
+          <div class="comment-btn">
             <button (click)="displayCommentForm(comment.id)">Edit <i class="fa-solid fa-pen"></i></button>
             <button (click)="displayCommentDelete(comment.id)">Delete <i class="fa-solid fa-trash-can"></i></button>
           </div>

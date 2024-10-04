@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { Observable } from "rxjs";
 import {Post} from "../../model/post";
 import {PostService} from "../../services/post.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AsyncPipe, NgIf, TitleCasePipe} from "@angular/common";
 import {CreateEditPostComponent} from "../modal/create-edit-post/create-edit-post.component";
 import {DeleteComponent} from "../modal/delete/delete.component";
@@ -40,7 +40,8 @@ export class PostDetailsComponent implements OnInit{
   errorMessage: string | null = null;
   commentId!: string | null;
 
-  constructor(private postService: PostService, private route: ActivatedRoute, private commentService: CommentService) {}
+  constructor(private postService: PostService, private route: ActivatedRoute, private commentService: CommentService,
+              private router: Router) {}
 
   ngOnInit() {
     this.postId = this.route.snapshot.paramMap.get('id');
@@ -86,5 +87,9 @@ export class PostDetailsComponent implements OnInit{
 
   hideDeleteComment() {
     this.showCommentDelete = false;
+  }
+
+  goBack() {
+    this.router.navigate(['/'])
   }
 }
