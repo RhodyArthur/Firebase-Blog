@@ -9,6 +9,9 @@
   line-height: $line-height;
   color: $gray;
 
+  .back {
+    cursor: pointer;
+  }
 
   h2 {
     color: $purple;
